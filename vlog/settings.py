@@ -152,7 +152,7 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'    
 
 # Database config
-# DATABASES['default'] = dj_database_url.config(conn_max_age=500)
+DATABASES['default'] = dj_database_url.config(conn_max_age=500)
 
 LOGIN_REDIRECT_URL = "my-profile"
 LOGOUT_REDIRECT_URL = "/"
