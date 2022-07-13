@@ -1,4 +1,5 @@
-from django.db import OperationalError, models
+from django.db import models
+from django.db.utils import OperationalError, ProgrammingError
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django_resized import ResizedImageField
@@ -121,16 +122,17 @@ class SiteInfo(models.Model):
         SITE_INFO["site_info"] = self
         return super().save(*args, **kwargs)
 
-# class User(User):
-#     def get_absolute_url(self):
-#         return reverse('my-profile')
-
 try:
     SITE_INFO = {
         'contacts': Contact.objects.all(),
         'site_info': SiteInfo.objects.all().first()
     }
 except OperationalError:
+    SITE_INFO = {
+        'contacts': None,
+        'site_info': None
+    }
+except ProgrammingError:
     SITE_INFO = {
         'contacts': None,
         'site_info': None
