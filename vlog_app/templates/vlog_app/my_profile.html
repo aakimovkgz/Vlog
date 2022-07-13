@@ -18,7 +18,7 @@
     </div>
     <div class="row" 'justify-content-center'>
   <div class="col" py-lg-3>
-    <a href="{%url 'create-post'%}" style="color: inherit;">
+    <a href="{%url 'post-create'%}" style="color: inherit;">
       <h3 class="fw-light"><strong>Create post</strong></h3>
         <p>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
@@ -27,7 +27,7 @@
         </p>
     </a>
     <p>
-      Количество моих постов: {{all_posts.count}}
+      Количество моих постов: {{object_list.count}}
     </p>
   </div>
 
@@ -36,7 +36,7 @@
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for post in all_posts %}
+        {% for post in object_list %}
         <div class="col">
           <div class="card shadow-sm h-100">
             <img src="{{ post.img.url }}" class="card-img-top" alt="...">
@@ -45,9 +45,10 @@
               <p class="card-text">{{ post.description|truncatechars:100  }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary "><a href="{% url 'post-detail' post.id %}">View</a></button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary "><a href="{{ post.get_absolute_url }}">View</a></button>
+                  {% comment %} <button type="button" class="btn btn-sm btn-outline-secondary "><a href="{% url 'post-detail' post.id %}">View</a></button> {% endcomment %}
                   {% if request.user__id.id == post.user__id.id and request.user.is_authenticated%}
-                    <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{% url 'edit-post' post.id %}">Edit</a></button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{% url 'post-edit' post.id %}">Edit</a></button>
                   {% endif %}
                 </div>
                 <small class="text-muted">{{ post.user }} | {{ post.create_date }} | {{ post.id }}</small>

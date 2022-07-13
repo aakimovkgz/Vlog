@@ -41,7 +41,7 @@
         <div class="col-sm py-4">
           <h4 class="text-white">Profile</h4>
           <ul class="list-unstyled">
-            {% comment %} <li style="display: inline;"><a href="{% url 'my-profile' %}" class="text-white">Hi user {{request.user.username}}</a></li> {% endcomment %}
+            <li style="display: inline;"><a href="{% url 'my-profile' %}" class="text-white">Hi user {{request.user.username}}</a></li>
             {% if request.user.is_authenticated %}
               <li style="display: inline;"><a href="{% url 'logout' %}" class="text-white">LogOut</a></li>
             {% else %}
@@ -63,7 +63,7 @@
 
   <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container">
-      <a href="#" class="navbar-brand d-flex align-items-center">
+      <a href="/" class="navbar-brand d-flex align-items-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         <strong>{{site_info.name}}</strong>
       </a>
@@ -100,7 +100,7 @@
               <p class="card-text">{{ post.description|truncatechars:100  }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  {% comment %} <button type="button" class="btn btn-sm btn-outline-secondary "><a href="{% url 'post-detail' post.id %}">View</a></button> {% endcomment %}
+                  <button type="button" class="btn btn-sm btn-outline-secondary "><a href="{% url 'post-detail' post.id %}">View</a></button>
                 </div>
                 <small class="text-muted">{{ post.user }} | {{ post.create_date }}</small>
               </div>

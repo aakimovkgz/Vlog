@@ -1,6 +1,5 @@
 from django import forms
-from .models import Post
-from django.contrib.auth.models import User
+from .models import Post, User
 
 
 class CreatePostForm(forms.ModelForm):
@@ -25,3 +24,4 @@ class EditPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'img', 'description', 'is_draft', 'is_delete')
+        
