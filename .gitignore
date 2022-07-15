@@ -1,3 +1,4 @@
 db.sqlite3
 media
 .env
+vlog_app/__pycache__

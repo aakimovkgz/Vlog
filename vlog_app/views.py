@@ -6,7 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
+from .serializers import *
 
 # Create your views here.
 
@@ -49,8 +50,7 @@ class MyProfileView(LoginRequiredMixin, ListView):
     
     model = Post
     template_name = 'vlog_app/my_profile.html'
-    
-    
+     
     def get_queryset(self):
         return Post.objects.filter(
             is_delete=False,
@@ -81,12 +81,20 @@ class PostsListView(ListView):
         )
         return context
     
+    
+class PostsListApiView(ListAPIView):
+    
+    serializer_class = PostSerializers
+    queryset = Post.objects.filter(     
+        is_draft=False,
+        is_delete=False,
+    )
+    
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Post
+
     form_class = CreatePostForm
     template_name = 'vlog_app/post_create.html'
-    # success_url = 'my-profile'
     
     def form_valid(self, form):
         if form.is_valid():
@@ -107,7 +115,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         
 class PostEditView(LoginRequiredMixin, UpdateView):
     
-    model = Post
     form_class = EditPostForm
     template_name = 'vlog_app/post_edit.html'
     
