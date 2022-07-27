@@ -127,12 +127,7 @@ try:
         'contacts': Contact.objects.all(),
         'site_info': SiteInfo.objects.all().first()
     }
-except OperationalError:
-    SITE_INFO = {
-        'contacts': None,
-        'site_info': None
-    }
-except ProgrammingError:
+except Exception:
     SITE_INFO = {
         'contacts': None,
         'site_info': None
