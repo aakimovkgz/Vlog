@@ -23,8 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY='django-insecure-ztv3w5$ha_x)vgq30d_=7iq#yjlh^b(8@jn*nga_p&%szz2gi6'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,7 +47,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'rest_framework',
-    
+    'rest_framework_simplejwt',
+    'djoser',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -154,7 +155,13 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'    
 
 # Database config
-# DATABASES['default'] = dj_database_url.config(conn_max_age=500)
+DATABASES['default'] = dj_database_url.config(conn_max_age=500)
 
 LOGIN_REDIRECT_URL = "my-profile"
 LOGOUT_REDIRECT_URL = "/"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}

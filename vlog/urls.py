@@ -19,12 +19,16 @@ from django.conf.urls.static import static
 
 from django.conf import settings
 
+from .yasg import urlpatterns_yasg
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('vlog_app.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('api-auth/', include('rest_framework.urls'))
-]
+    path('api-auth/', include('rest_framework.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+] + urlpatterns_yasg
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

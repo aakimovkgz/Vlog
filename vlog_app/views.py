@@ -1,4 +1,5 @@
-from django.shortcuts import redirect
+from django import views
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from .models import *
 from .forms import CreatePostForm, EditPostForm
@@ -6,7 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView, RetrieveAPIView
+from rest_framework.viewsets import ModelViewSet
 from .serializers import *
 
 # Create your views here.
@@ -81,15 +83,6 @@ class PostsListView(ListView):
         )
         return context
     
-    
-class PostsListApiView(ListAPIView):
-    
-    serializer_class = PostSerializers
-    queryset = Post.objects.filter(     
-        is_draft=False,
-        is_delete=False,
-    )
-    
 
 class PostCreateView(LoginRequiredMixin, CreateView):
 
@@ -142,3 +135,59 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         )
         return context
     
+    
+    
+
+
+class PostsListApiView(ListAPIView):
+    
+    serializer_class = PostSerializers
+    queryset = Post.objects.filter(     
+        is_draft=False,
+        is_delete=False,
+    ).order_by('-id')
+    
+    
+class MyProfileApiView(ListAPIView):
+    
+    serializer_class = MyProfilePostSerializers
+    
+    def get_queryset(self):
+        return Post.objects.filter(    
+        user_id__id=self.request.user.id,
+        is_delete=False,
+    )
+
+
+class PostCreateApiView(CreateAPIView):
+    
+    serializer_class = PostCreateSerializers
+    
+    def perform_create(self, serializer):
+        user = get_object_or_404(User, pk=self.request.user.id)
+
+        serializer.save(user_id=user)
+
+
+class PostEditApiView(RetrieveUpdateAPIView):
+    
+    serializer_class = PostEditSerializers
+    queryset = Post.objects.all()
+
+
+class PostDetailApiView(RetrieveAPIView):
+    
+    serializer_class = PostDetailSerializers
+    queryset = Post.objects.all()
+    
+    
+class ContactModelViewSet(ModelViewSet):
+    
+    serializer_class = ContactSerializers
+    queryset = Contact.objects.all()
+
+
+class SiteInfoModelViewSet(ModelViewSet):
+    
+    serializer_class = SiteInfoSerializers
+    queryset = SiteInfo.objects.all()
